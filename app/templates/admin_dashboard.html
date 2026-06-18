@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ title if title else 'Admin Dashboard - VisaHub' }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='css/styles.css') }}" />
+</head>
+<body class="admin-body">
+    <aside class="admin-sidebar">
+        <a class="admin-brand" href="/admin">
+            <span class="admin-brand-icon">✈</span>
+            <span>VisaHub Admin</span>
+        </a>
+
+        <nav class="admin-menu">
+            <details class="admin-nav-group" open>
+                <summary>🛂 <span>Visa</span></summary>
+                <a class="admin-menu-item {{ 'active' if admin_active == 'visa_orders' else '' }}" href="/admin/visa-orders">
+                    <span>🧾</span><span>Visa orders</span>
+                </a>
+                <a class="admin-menu-item {{ 'active' if admin_active == 'destination' else '' }}" href="/admin/destinations">
+                    <span>🌍</span><span>Destination</span>
+                </a>
+            </details>
+
+            <details class="admin-nav-group" open>
+                <summary>🚗 <span>Airport pickup</span></summary>
+                <a class="admin-menu-item {{ 'active' if admin_active == 'pickup_orders' else '' }}" href="/admin/airport-pickup-orders">
+                    <span>📦</span><span>Airport pickup orders</span>
+                </a>
+                <a class="admin-menu-item {{ 'active' if admin_active == 'driver' else '' }}" href="/admin/drivers">
+                    <span>🪪</span><span>Driver</span>
+                </a>
+            </details>
+
+            <details class="admin-nav-group" open>
+                <summary>⚡ <span>Fast track</span></summary>
+                <a class="admin-menu-item {{ 'active' if admin_active == 'fast_track_orders' else '' }}" href="/admin/fast-track-orders">
+                    <span>🎫</span><span>Fast track orders</span>
+                </a>
+                <a class="admin-menu-item {{ 'active' if admin_active == 'partner' else '' }}" href="/admin/partners">
+                    <span>🤝</span><span>Partner</span>
+                </a>
+            </details>
+
+            <a class="admin-menu-item admin-single-item {{ 'active' if admin_active == 'statistics' else '' }}" href="/admin/statistics">
+                <span>📊</span><span>Statistics</span>
+            </a>
+        </nav>
+
+        <a class="admin-profile" href="/admin/profile">
+            <div class="admin-avatar">AD</div>
+            <div>
+                <strong>Admin User</strong>
+                <small>admin@visahub.com</small>
+            </div>
+        </a>
+    </aside>
+
+    <main class="admin-main admin-main-clean">
+        <header class="admin-topbar">
+            <div>
+                <p class="admin-eyebrow">{{ eyebrow }}</p>
+                <h1>{{ page_title }}</h1>
+            </div>
+            <div class="admin-top-actions">
+                <button class="admin-icon-btn">🔔</button>
+                <button class="admin-primary-btn">+ Create new</button>
+            </div>
+        </header>
+
+        <section class="admin-panel admin-orders-panel">
+            <div class="admin-panel-header">
+                <div>
+                    <h2>{{ table_title }}</h2>
+                    <p>{{ table_subtitle }}</p>
+                </div>
+                <div class="admin-filter-row">
+                    <input type="text" placeholder="Search orders, customer, destination..." />
+                    <select>
+                        <option>Newest first</option>
+                        <option>Oldest first</option>
+                        <option>Highest amount</option>
+                    </select>
+                </div>
+            </div>
+
+            {% if admin_active == 'visa_orders' %}
+            <div class="admin-status-tabs">
+                {% for status in available_statuses %}
+                <a class="admin-status-tab {{ 'active' if selected_status == status else '' }}" href="/admin/visa-orders?status={{ status }}&page=1">
+                    <span>{{ status }}</span>
+                    <strong>{{ status_counts[status] }}</strong>
+                </a>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <div class="admin-table-wrap">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Customer</th>
+                            <th>Service</th>
+                            <th>Status</th>
+                            <th>Amount</th>
+                            <th>Updated</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in rows %}
+                        <tr>
+                            <td><strong>{{ row.id }}</strong></td>
+                            <td>
+                                <div class="table-person">
+                                    <span>{{ row.initials }}</span>
+                                    <div>
+                                        <strong>{{ row.customer }}</strong>
+                                        <small>{{ row.email }}</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>{{ row.service }}</td>
+                            <td><span class="status-pill {{ row.status_class }}">{{ row.status }}</span></td>
+                            <td>{{ row.amount }}</td>
+                            <td>{{ row.updated }}</td>
+                            <td><button class="admin-table-btn">View</button></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            {% if admin_active == 'visa_orders' %}
+            <div class="admin-pagination">
+                <p>Showing {{ start_item }}-{{ end_item }} of {{ total_orders }} orders</p>
+                <div class="admin-page-buttons">
+                    <a class="admin-page-btn {{ 'disabled' if current_page == 1 else '' }}" href="/admin/visa-orders?status={{ selected_status }}&page={{ current_page - 1 }}">Previous</a>
+                    {% for page in range(1, total_pages + 1) %}
+                    <a class="admin-page-btn {{ 'active' if current_page == page else '' }}" href="/admin/visa-orders?status={{ selected_status }}&page={{ page }}">{{ page }}</a>
+                    {% endfor %}
+                    <a class="admin-page-btn {{ 'disabled' if current_page == total_pages else '' }}" href="/admin/visa-orders?status={{ selected_status }}&page={{ current_page + 1 }}">Next</a>
+                </div>
+            </div>
+            {% endif %}
+        </section>
+    </main>
+</body>
+</html>

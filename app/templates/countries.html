@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-hero compact">
+    <span class="eyebrow">All destinations</span>
+    <h1>Find your visa destination</h1>
+    <p>Search countries and choose the visa service that matches your trip.</p>
+</section>
+
+<section class="section">
+    <div class="search-panel">
+        <input id="countrySearch" onkeyup="filterCountries()" placeholder="🔍 Search destination country..." />
+        <div class="chips">
+            <button onclick="setRegion('all')">All</button>
+            <button onclick="setRegion('Asia')">Asia</button>
+            <button onclick="setRegion('Europe')">Europe</button>
+            <button onclick="setRegion('America')">America</button>
+            <button onclick="setRegion('Middle East')">Middle East</button>
+            <button onclick="setRegion('Oceania')">Oceania</button>
+        </div>
+    </div>
+    <div class="country-grid" id="allCountries">
+        {% for c in countries %}
+        <article class="country-card filter-card" data-name="{{ c.name|lower }}" data-region="{{ c.region }}">
+            <div class="flag">{{ c.flag }}</div>
+            <h3>{{ c.name }} Visa</h3>
+            <p>{{ c.region }} • {{ c.days }}</p>
+            <strong>From {{ c.price }}</strong>
+            <a class="card-btn" href="/visa/{{ c.slug }}">Apply Now</a>
+        </article>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

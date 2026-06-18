@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="detail-hero">
+    <div class="detail-hero-copy">
+        <a class="back-link" href="/#visa-grid">← Back to popular destinations</a>
+        <span class="eyebrow">{{ destination.region }} • {{ destination.visa_type }}</span>
+        <h1>{{ destination.flag }} {{ destination.name }} Visa</h1>
+        <p>{{ destination.description }}</p>
+        <div class="detail-actions">
+            <a class="primary-btn" href="/application?destination={{ destination.slug }}">Application</a>
+            <a class="secondary-btn" href="#requirements">View requirements</a>
+        </div>
+    </div>
+    <aside class="price-card">
+        <span class="tag">Visa detail</span>
+        <h3>Trip summary</h3>
+        <div class="summary-row"><span>Destination</span><strong>{{ destination.name }}</strong></div>
+        <div class="summary-row"><span>Visa type</span><strong>{{ destination.visa_type }}</strong></div>
+        <div class="summary-row"><span>Processing</span><strong>{{ destination.days }}</strong></div>
+        <div class="summary-row"><span>From</span><strong>{{ destination.price }}</strong></div>
+        <a class="card-btn" href="/application?destination={{ destination.slug }}">Start Application</a>
+    </aside>
+</section>
+
+<section class="section detail-section" id="requirements">
+    <div class="section-head">
+        <div>
+            <span class="eyebrow">Required documents</span>
+            <h2>Documents you should prepare</h2>
+            <p>This checklist gives users a clear view before they start the application flow.</p>
+        </div>
+    </div>
+    <div class="detail-grid">
+        <article class="detail-panel large-panel">
+            <h3>Document checklist</h3>
+            <div class="checklist">
+                {% for item in destination.requirements %}
+                <div class="check-item"><span>✓</span><p>{{ item }}</p></div>
+                {% endfor %}
+            </div>
+        </article>
+        <article class="detail-panel">
+            <h3>Estimated cost</h3>
+            {% for fee in destination.fees %}
+            <div class="fee-row"><span>{{ fee.label }}</span><strong>{{ fee.amount }}</strong></div>
+            {% endfor %}
+            <p class="note">Final cost can change depending on nationality, visa type, and processing option.</p>
+        </article>
+    </div>
+</section>
+
+<section class="section soft">
+    <div class="section-head">
+        <div>
+            <span class="eyebrow">Application process</span>
+            <h2>From requirement check to visa result.</h2>
+        </div>
+    </div>
+    <div class="timeline-grid">
+        {% for step in destination.steps %}
+        <div class="timeline-card">
+            <span>{{ loop.index }}</span>
+            <strong>{{ step }}</strong>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="center-action">
+        <a class="primary-btn" href="/application?destination={{ destination.slug }}">Application</a>
+    </div>
+</section>
+{% endblock %}

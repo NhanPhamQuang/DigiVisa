@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="profile-hero">
+    <div>
+        <p class="eyebrow">My Profile</p>
+        <h1>Manage traveler information and passport documents.</h1>
+        <p>Save your personal details once, then reuse them when starting a new visa application.</p>
+    </div>
+    <div class="profile-status-card">
+        <span class="status-dot"></span>
+        <div>
+            <strong>Profile completion</strong>
+            <p>Passport upload is required before using saved profile for application.</p>
+        </div>
+    </div>
+</section>
+
+<section class="profile-layout">
+    <form class="profile-card profile-form" action="/profile" method="post" enctype="multipart/form-data">
+        <div class="section-heading">
+            <span>01</span>
+            <div>
+                <h2>Personal Information</h2>
+                <p>These details will be used as the default traveler profile.</p>
+            </div>
+        </div>
+
+        <div class="form-grid two-cols">
+            <label>
+                Full name
+                <input type="text" name="full_name" value="Nguyen Van A" placeholder="Enter full name" required>
+            </label>
+            <label>
+                Email address
+                <input type="email" name="email" value="traveler@example.com" placeholder="Enter email address" required>
+            </label>
+            <label>
+                Phone number
+                <input type="tel" name="phone" value="+84 901 234 567" placeholder="Enter phone number" required>
+            </label>
+            <label>
+                Contact by
+                <select id="contactSelect" onchange="addContactTag()">
+                    <option value="">Choose contact channel</option>
+                    <option value="Zalo">Zalo</option>
+                    <option value="WhatsApp">WhatsApp</option>
+                    <option value="Line">Line</option>
+                    <option value="Skype">Skype</option>
+                </select>
+            </label>
+        </div>
+
+        <div class="contact-tags-box">
+            <div class="field-title">Selected contact channels</div>
+            <div id="contactTags" class="contact-tags">
+                <span class="contact-tag" data-value="Zalo">Zalo <button type="button" onclick="removeContactTag(this)">×</button></span>
+                <span class="contact-tag" data-value="WhatsApp">WhatsApp <button type="button" onclick="removeContactTag(this)">×</button></span>
+                <span class="contact-tag" data-value="Line">Line <button type="button" onclick="removeContactTag(this)">×</button></span>
+            </div>
+            <input type="hidden" name="contact_by" id="contactByInput" value="Zalo,WhatsApp,Line">
+            <small>User can select multiple channels. Each selected item appears as a removable tag.</small>
+        </div>
+
+        <div class="section-heading passport-heading">
+            <span>02</span>
+            <div>
+                <h2>Passport Upload</h2>
+                <p>Upload a clear passport image so staff can verify traveler information.</p>
+            </div>
+        </div>
+
+        <div class="passport-upload-card">
+            <div class="upload-icon">📘</div>
+            <div>
+                <h3>Upload passport image</h3>
+                <p>Accepted formats: JPG, PNG, PDF. Recommended: full passport information page, clear and readable.</p>
+                <input type="file" name="passport" accept="image/*,.pdf" required>
+            </div>
+        </div>
+
+        <div class="profile-actions-row">
+            <button class="btn secondary" type="reset">Reset</button>
+            <button class="btn primary" type="submit">Save Profile</button>
+        </div>
+    </form>
+
+    <aside class="profile-card profile-preview">
+        <h2>Profile Preview</h2>
+        <div class="avatar-circle">NA</div>
+        <h3>Nguyen Van A</h3>
+        <p>traveler@example.com</p>
+        <div class="preview-list">
+            <div><span>Phone</span><strong>+84 901 234 567</strong></div>
+            <div><span>Contact by</span><strong>Zalo, WhatsApp, Line</strong></div>
+            <div><span>Passport</span><strong class="warning-text">Not uploaded yet</strong></div>
+        </div>
+        <div class="profile-note">
+            <strong>UX note</strong>
+            <p>When users start a visa application, the first tab can reuse this saved profile and passport.</p>
+        </div>
+    </aside>
+</section>
+{% endblock %}

@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+    <div class="hero-content">
+        <span class="eyebrow">Visa • Airport Pick-up • Fast Track</span>
+        <h1>Travel smarter, cross borders easier.</h1>
+        <p>Apply for tourist visas, book airport pick-up, and request fast track airport assistance from one clean platform.</p>
+        <div class="hero-actions">
+            <a class="primary-btn" href="#visa-grid">Apply Visa</a>
+            <a class="secondary-btn" href="/countries">Check Requirements</a>
+        </div>
+        <div class="hero-stats">
+            <span>🌍 150+ countries</span>
+            <span>⚡ Fast processing</span>
+            <span>🔒 Secure documents</span>
+        </div>
+    </div>
+    <div class="hero-card">
+        <h3>Start your trip</h3>
+        <label>Destination</label>
+        <input placeholder="Search Japan, Korea, Australia..." />
+        <label>Service</label>
+        <select>
+            <option>Tourist Visa</option>
+            <option>Airport Pick-up</option>
+            <option>Fast Track</option>
+        </select>
+        <button>Check now</button>
+    </div>
+</section>
+
+<section class="section">
+    <div class="section-head">
+        <div>
+            <span class="eyebrow">Main services</span>
+            <h2>Everything travelers need before landing.</h2>
+        </div>
+    </div>
+    <div class="service-grid three">
+        <article class="service-card">
+            <div class="service-icon">🛂</div>
+            <h3>Apply Visa</h3>
+            <p>Submit visa applications online with guided document preparation.</p>
+            <a href="#visa-grid">Explore visas →</a>
+        </article>
+        <article class="service-card">
+            <div class="service-icon">🚗</div>
+            <h3>Airport Pick-up</h3>
+            <p>Book trusted airport transfer services for arrival and departure.</p>
+            <a href="#pickup">Book pick-up →</a>
+        </article>
+        <article class="service-card">
+            <div class="service-icon">⚡</div>
+            <h3>Fast Track</h3>
+            <p>Meet-and-assist services with priority lane support at selected airports.</p>
+            <a href="#fast-track">View fast track →</a>
+        </article>
+    </div>
+</section>
+
+<section class="section" id="visa-grid">
+    <div class="section-head">
+        <div>
+            <span class="eyebrow">Apply visa</span>
+            <h2>Popular visa destinations</h2>
+            <p>Maximum 20 destinations on homepage. Full list is available with search.</p>
+        </div>
+        <a class="outline-btn" href="/countries">View All Countries</a>
+    </div>
+    <div class="country-grid">
+        {% for c in countries %}
+        <article class="country-card">
+            <div class="flag">{{ c.flag }}</div>
+            <h3>{{ c.name }} Visa</h3>
+            <p>Processing: {{ c.days }}</p>
+            <strong>From {{ c.price }}</strong>
+            <a class="card-btn" href="/visa/{{ c.slug }}">Apply Now</a>
+        </article>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="section soft" id="pickup">
+    <div class="section-head">
+        <div>
+            <span class="eyebrow">Airport pick-up</span>
+            <h2>Book airport transfer before arrival.</h2>
+        </div>
+        <a class="outline-btn" href="#">View All Pick-up Services</a>
+    </div>
+    <div class="service-grid three">
+        {% for p in pickups %}
+        <article class="wide-card">
+            <span class="tag">{{ p.tag }}</span>
+            <h3>{{ p.city }}</h3>
+            <p>{{ p.airport }}</p>
+            <strong>From {{ p.price }}</strong>
+            <button>Book Pick-up</button>
+        </article>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="section" id="fast-track">
+    <div class="section-head">
+        <div>
+            <span class="eyebrow">Fast track</span>
+            <h2>Priority airport assistance.</h2>
+        </div>
+        <a class="outline-btn" href="#">View All Fast Track</a>
+    </div>
+    <div class="service-grid three">
+        {% for f in fast_tracks %}
+        <article class="wide-card">
+            <span class="tag">{{ f.country }}</span>
+            <h3>{{ f.title }}</h3>
+            <ul>
+                {% for item in f.features %}<li>{{ item }}</li>{% endfor %}
+            </ul>
+            <strong>From {{ f.price }}</strong>
+            <button>Request Service</button>
+        </article>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

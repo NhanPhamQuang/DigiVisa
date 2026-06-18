@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="auth-page">
+    <div class="auth-card">
+        <div class="auth-copy">
+            <p class="eyebrow">{{ eyebrow }}</p>
+            <h1>{{ heading }}</h1>
+            <p>{{ description }}</p>
+            <div class="auth-benefits">
+                <span>🔒 Secure account</span>
+                <span>📄 Track applications</span>
+                <span>⚡ Faster checkout</span>
+            </div>
+        </div>
+
+        <form class="auth-form" method="post" action="{{ action }}">
+            <div class="auth-form-head">
+                <h2>{{ form_title }}</h2>
+                <p>{{ form_subtitle }}</p>
+            </div>
+
+            {% if mode == 'signup' %}
+            <label for="full_name">Full name</label>
+            <input id="full_name" name="full_name" type="text" placeholder="Enter your full name" required />
+
+            <label for="email">Email address</label>
+            <input id="email" name="email" type="email" placeholder="name@example.com" required />
+
+            <label for="phone">Phone number</label>
+            <input id="phone" name="phone" type="tel" placeholder="+84 900 000 000" required />
+
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" placeholder="Create a password" required />
+
+            <label for="confirm_password">Confirm password</label>
+            <input id="confirm_password" name="confirm_password" type="password" placeholder="Confirm your password" required />
+
+            <button class="auth-submit" type="submit">Sign up</button>
+
+            <p class="auth-switch">Already have an account? <a href="/signin">Sign in</a></p>
+            {% else %}
+            <label for="email">Email address</label>
+            <input id="email" name="email" type="email" placeholder="name@example.com" required />
+
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" placeholder="Enter your password" required />
+
+            <div class="form-row-between">
+                <label class="remember-me"><input type="checkbox" name="remember" /> Remember me</label>
+                <a href="#">Forgot password?</a>
+            </div>
+
+            <button class="auth-submit" type="submit">Sign in</button>
+
+            <p class="auth-switch">New to VisaHub? <a href="/signup">Create an account</a></p>
+            {% endif %}
+        </form>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ title if title else 'VisaHub - Travel Services' }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='css/styles.css') }}" />
+</head>
+<body>
+    <nav class="navbar">
+        <a class="brand" href="/">
+            <span class="brand-icon">✈</span>
+            <span>VisaHub</span>
+        </a>
+        <button class="mobile-toggle" onclick="toggleMenu()">☰</button>
+        <div class="nav-links" id="navLinks">
+            <a class="{{ 'active' if active == 'home' else '' }}" href="/">Home</a>
+
+            <div class="nav-item dropdown {{ 'active' if active == 'visa' else '' }}">
+                <a class="dropdown-toggle" href="/visa-services">
+                    Visa Services
+                    <span class="chevron">⌄</span>
+                </a>
+                <div class="dropdown-menu">
+                    <a href="/visa-services/tourist-visa">
+                        <span class="menu-icon">🛂</span>
+                        <span>
+                            <strong>Tourist Visa</strong>
+                            <small>Apply for short-term travel visas</small>
+                        </span>
+                    </a>
+                    <a href="/visa-services/business-visa">
+                        <span class="menu-icon">💼</span>
+                        <span>
+                            <strong>Business Visa</strong>
+                            <small>For meetings, events, and work trips</small>
+                        </span>
+                    </a>
+                    <a href="/visa-services/student-visa">
+                        <span class="menu-icon">🎓</span>
+                        <span>
+                            <strong>Student Visa</strong>
+                            <small>Study abroad application support</small>
+                        </span>
+                    </a>
+                    <a href="/visa-services/visa-extension">
+                        <span class="menu-icon">📅</span>
+                        <span>
+                            <strong>Visa Extension</strong>
+                            <small>Extend your stay with guidance</small>
+                        </span>
+                    </a>
+                    <a href="/visa-services/urgent-processing">
+                        <span class="menu-icon">⚡</span>
+                        <span>
+                            <strong>Urgent Processing</strong>
+                            <small>Fast support for time-sensitive cases</small>
+                        </span>
+                    </a>
+                    <a href="/countries">
+                        <span class="menu-icon">🔎</span>
+                        <span>
+                            <strong>Visa Requirements Checker</strong>
+                            <small>Search requirements by destination</small>
+                        </span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="nav-item dropdown {{ 'active' if active == 'resources' else '' }}">
+                <a class="dropdown-toggle" href="/travel-resources">
+                    Travel Resources
+                    <span class="chevron">⌄</span>
+                </a>
+                <div class="dropdown-menu compact-menu">
+                    <a href="/travel-resources/visa-guides">
+                        <span class="menu-icon">📘</span>
+                        <span><strong>Visa Guides</strong></span>
+                    </a>
+                    <a href="/countries">
+                        <span class="menu-icon">🌍</span>
+                        <span><strong>Country Requirements</strong></span>
+                    </a>
+                    <a href="/travel-resources/travel-tips">
+                        <span class="menu-icon">🧳</span>
+                        <span><strong>Travel Tips</strong></span>
+                    </a>
+                    <a href="/travel-resources/faq">
+                        <span class="menu-icon">❓</span>
+                        <span><strong>FAQ</strong></span>
+                    </a>
+                    <a href="/travel-resources/blog">
+                        <span class="menu-icon">✍️</span>
+                        <span><strong>Blog</strong></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="nav-actions">
+            <button class="icon-btn" title="Notifications">🔔</button>
+            <a class="signin-btn {{ 'active' if active == 'auth' else '' }}" href="/signin">Sign in</a>
+            <a class="profile-btn {{ 'active' if active == 'profile' else '' }}" href="/profile">👤 Profile</a>
+        </div>
+    </nav>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <div class="footer-top">
+            <div class="footer-brand">
+                <div class="brand footer-logo"><span class="brand-icon">✈</span><span>VisaHub</span></div>
+                <p>Simplifying international travel through digital visa services, airport pick-up, and fast track support.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Services</h4>
+                <a href="/visa-services">Tourist Visa</a>
+                <a href="/visa-services">Business Visa</a>
+                <a href="/visa-services">Student Visa</a>
+                <a href="#fast-track">Fast Track</a>
+            </div>
+            <div class="footer-col">
+                <h4>Resources</h4>
+                <a href="/travel-resources">Visa Guides</a>
+                <a href="/countries">Country Requirements</a>
+                <a href="/travel-resources">FAQ</a>
+                <a href="/travel-resources">Travel Tips</a>
+            </div>
+            <div class="footer-col">
+                <h4>Support</h4>
+                <a href="#">Contact Us</a>
+                <a href="#">Help Center</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms</a>
+            </div>
+        </div>
+        <div class="footer-countries">Countries Supported: USA • Canada • Australia • Japan • Korea • UK • Singapore • Vietnam</div>
+        <div class="footer-bottom">© 2026 VisaHub. All rights reserved.</div>
+    </footer>
+    <script src="{{ url_for('static', path='js/main.js') }}"></script>
+</body>
+</html>

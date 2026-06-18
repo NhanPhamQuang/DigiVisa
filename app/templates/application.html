@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="application-hero">
+    <div>
+        <a class="back-link" href="/visa/{{ destination.slug }}">← Back to {{ destination.name }} visa details</a>
+        <span class="eyebrow">Start application</span>
+        <h1>{{ destination.flag }} {{ destination.name }} Visa Application</h1>
+        <p>Upload passport information to start the application. Passport upload is required. Other supporting documents will be requested by our staff after review.</p>
+    </div>
+    <aside class="application-summary">
+        <h3>Order summary</h3>
+        <div class="summary-row"><span>Destination</span><strong>{{ destination.name }}</strong></div>
+        <div class="summary-row"><span>Visa type</span><strong>{{ destination.visa_type }}</strong></div>
+        <div class="summary-row"><span>Processing</span><strong>{{ destination.days }}</strong></div>
+        <div class="summary-row"><span>Service fee</span><strong>{{ destination.price }}</strong></div>
+    </aside>
+</section>
+
+<section class="section application-section">
+    <div class="application-layout">
+        <form class="application-form" action="/payment" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="destination" value="{{ destination.slug }}">
+
+            <div class="form-header">
+                <span class="eyebrow">Passport information</span>
+                <h2>Who is applying for this visa?</h2>
+                <p>Choose your saved profile or upload a new passport if you are applying for another traveler.</p>
+            </div>
+
+            <div class="tab-switcher" role="tablist">
+                <input type="radio" id="tab-profile" name="passport_option" value="profile" checked>
+                <label for="tab-profile">Use my profile</label>
+
+                <input type="radio" id="tab-new" name="passport_option" value="new_passport">
+                <label for="tab-new">Upload new passport</label>
+
+                <div class="tab-content profile-content">
+                    <div class="profile-card application-card">
+                        <div class="profile-avatar">PN</div>
+                        <div>
+                            <h3>Saved traveler profile</h3>
+                            <p>Use passport information already saved in your user profile.</p>
+                        </div>
+                    </div>
+                    <div class="profile-grid">
+                        <div><span>Full name</span><strong>Pham Quang Nhan</strong></div>
+                        <div><span>Email</span><strong>nhan@example.com</strong></div>
+                        <div><span>Phone</span><strong>+84 900 000 000</strong></div>
+                        <div><span>Passport status</span><strong class="status-ok">Passport on file</strong></div>
+                    </div>
+                    <label class="upload-box compact-upload">
+                        <input type="file" name="passport_profile_confirmation" accept="image/*,.pdf">
+                        <span>Optional: replace or re-upload passport image</span>
+                        <small>PNG, JPG, JPEG, or PDF</small>
+                    </label>
+                </div>
+
+                <div class="tab-content new-content">
+                    <div class="application-card warning-card">
+                        <h3>Apply for another traveler</h3>
+                        <p>Upload the passport image of the traveler you are applying for. This upload is required for a new traveler.</p>
+                    </div>
+                    <div class="field-grid two-cols">
+                        <label>
+                            Traveler full name
+                            <input type="text" name="traveler_name" placeholder="Enter full name as shown on passport">
+                        </label>
+                        <label>
+                            Traveler email / contact
+                            <input type="email" name="traveler_email" placeholder="traveler@email.com">
+                        </label>
+                    </div>
+                    <label class="upload-box required-upload">
+                        <input type="file" name="new_passport_file" accept="image/*,.pdf">
+                        <span>Upload passport image *</span>
+                        <small>Required for new traveler • PNG, JPG, JPEG, or PDF</small>
+                    </label>
+                </div>
+            </div>
+
+            <div class="staff-note">
+                <strong>Note:</strong> Passport is required to create the application. Our staff will contact the customer for extra documents such as photo, flight booking, hotel booking, invitation letter, or financial proof if needed.
+            </div>
+
+            <div class="payment-panel">
+                <div>
+                    <span class="eyebrow">Next step</span>
+                    <h3>Ready to continue?</h3>
+                    <p>After payment, the application will be created and staff can start document verification.</p>
+                </div>
+                <button class="primary-btn button-reset" type="submit">Proceed to Payment</button>
+            </div>
+        </form>
+
+        <aside class="application-help">
+            <h3>What happens after payment?</h3>
+            <div class="mini-step"><span>1</span><p>Application is created in the system.</p></div>
+            <div class="mini-step"><span>2</span><p>Passport image is checked by staff.</p></div>
+            <div class="mini-step"><span>3</span><p>Staff contacts the customer for missing documents.</p></div>
+            <div class="mini-step"><span>4</span><p>Customer tracks the visa status from profile.</p></div>
+        </aside>
+    </div>
+</section>
+{% endblock %}
