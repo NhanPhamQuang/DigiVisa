@@ -1,24 +1,34 @@
 # Visa Service UI - FastAPI
 
+Full UI prototype for VisaHub:
+
+- Public homepage, visa detail, application flow, profile, sign in/sign up
+- Admin dashboard with dropdown sidebar
+- Visa orders tabs + pagination
+- Destination management list view
+- Create destination
+- Edit destination
+- Archive destination
+- Restore destination
+- Delete destination
+
 ## Run
 
 ```bash
-python -m venv .venv
-# Windows
-.venv\Scripts\activate
-# macOS/Linux
-source .venv/bin/activate
-
 pip install -r requirements.txt
 uvicorn app.main:app --reload
 ```
 
-Open: http://127.0.0.1:8000
+Open:
 
-## Pages
+```text
+http://127.0.0.1:8000
+```
 
-- `/` Home page
-- `/visa-services` Visa services page
-- `/travel-resources` Travel resources page
-- `/countries` View all visa countries with search
-- `/profile` Profile placeholder
+Admin:
+
+```text
+http://127.0.0.1:8000/admin
+http://127.0.0.1:8000/admin/destinations
+http://127.0.0.1:8000/admin/destinations/create
+```

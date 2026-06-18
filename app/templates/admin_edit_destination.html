@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='css/styles.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', path='css/admin.css') }}?v=20260618-clean" />
+</head>
+<body class="admin-body">
+    <aside class="admin-sidebar">
+        <a class="admin-brand" href="/admin"><span class="admin-brand-icon">✈</span><span>VisaHub Admin</span></a>
+        <nav class="admin-menu">
+            <details class="admin-nav-group" open>
+                <summary>🛂 <span>Visa</span></summary>
+                <a class="admin-menu-item" href="/admin/visa-orders"><span>🧾</span><span>Visa orders</span></a>
+                <a class="admin-menu-item active" href="/admin/destinations"><span>🌍</span><span>Destination</span></a>
+            </details>
+            <details class="admin-nav-group" open>
+                <summary>🚗 <span>Airport pickup</span></summary>
+                <a class="admin-menu-item" href="/admin/airport-pickup-orders"><span>📦</span><span>Airport pickup orders</span></a>
+                <a class="admin-menu-item" href="/admin/drivers"><span>🪪</span><span>Driver</span></a>
+            </details>
+            <details class="admin-nav-group" open>
+                <summary>⚡ <span>Fast track</span></summary>
+                <a class="admin-menu-item" href="/admin/fast-track-orders"><span>🎫</span><span>Fast track orders</span></a>
+                <a class="admin-menu-item" href="/admin/partners"><span>🤝</span><span>Partner</span></a>
+            </details>
+            <a class="admin-menu-item admin-single-item" href="/admin/statistics"><span>📊</span><span>Statistics</span></a>
+        </nav>
+        <a class="admin-profile" href="/admin/profile">
+            <div class="admin-avatar">AD</div>
+            <div><strong>Admin User</strong><small>admin@visahub.com</small></div>
+        </a>
+    </aside>
+
+    <main class="admin-main admin-main-clean">
+        <header class="admin-topbar">
+            <div>
+                <p class="admin-eyebrow">Visa destination management</p>
+                <h1>Edit destination</h1>
+            </div>
+            <div class="admin-top-actions">
+                <a class="admin-secondary-link" href="/admin/destinations">Back to destinations</a>
+            </div>
+        </header>
+
+        <section class="admin-create-layout">
+            <form class="admin-panel admin-destination-form" method="post" action="/admin/destinations/{{ destination.slug }}/edit">
+                <div class="admin-form-section-head">
+                    <span>01</span>
+                    <div>
+                        <h2>Update destination information</h2>
+                        <p>Update destination name, required document checklist, and service price.</p>
+                    </div>
+                </div>
+
+                <label class="admin-field">
+                    <span>Destination name</span>
+                    <input type="text" name="destination_name" value="{{ destination.name }}" required />
+                </label>
+
+                <div class="admin-field">
+                    <span>Required document checklist</span>
+                    <p class="admin-field-hint">Change the documents customers must prepare before staff review.</p>
+                    <div class="admin-checklist-grid">
+                        {% for doc in document_options %}
+                        <label>
+                            <input type="checkbox" name="documents" value="{{ doc }}" {{ 'checked' if doc in destination.documents else '' }} />
+                            {{ doc }}
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <label class="admin-field">
+                    <span>Service price</span>
+                    <div class="admin-price-input">
+                        <select name="currency">
+                            <option selected>USD</option>
+                            <option>VND</option>
+                            <option>EUR</option>
+                        </select>
+                        <input type="number" name="price" value="{{ destination.price.replace('$', '') }}" min="0" required />
+                    </div>
+                </label>
+
+                <div class="admin-form-actions">
+                    <a class="admin-cancel-btn" href="/admin/destinations">Cancel</a>
+                    <button class="admin-primary-btn" type="submit">Save changes</button>
+                </div>
+            </form>
+
+            <aside class="admin-panel admin-preview-panel">
+                <div class="admin-form-section-head">
+                    <span>02</span>
+                    <div>
+                        <h2>Current destination</h2>
+                        <p>Quick summary before saving changes.</p>
+                    </div>
+                </div>
+
+                <div class="destination-preview-card">
+                    <div class="destination-preview-icon">{{ destination.flag }}</div>
+                    <h3>{{ destination.name }}</h3>
+                    <p>This destination is currently marked as {{ destination.status|lower }}.</p>
+                    <div class="preview-row"><span>Checklist</span><strong>{{ destination.documents|length }} items</strong></div>
+                    <div class="preview-row"><span>Price</span><strong>{{ destination.price }}</strong></div>
+                    <div class="preview-row"><span>Status</span><strong>{{ destination.status }}</strong></div>
+                </div>
+
+                <div class="admin-note-box">
+                    <strong>UX note</strong>
+                    <p>Editing changes the destination detail content that customers see before starting an application.</p>
+                </div>
+            </aside>
+        </section>
+    </main>
+</body>
+</html>

@@ -279,6 +279,25 @@ ADMIN_ROWS = [
     {"id": "VH-1048", "initials": "KA", "customer": "Kieu An", "email": "traveler25@example.com", "service": "USA Tourist Visa", "status": "Pending", "status_class": "status-pending", "amount": "$39", "updated": "Last week"}
 ]
 
+
+ADMIN_DESTINATIONS = [
+    {"slug":"japan", "flag":"🇯🇵", "name":"Japan", "price":"$39", "status":"Active", "updated":"Today", "documents":["Passport", "Portrait photo", "Bank statement", "Travel itinerary", "Hotel booking"]},
+    {"slug":"south-korea", "flag":"🇰🇷", "name":"South Korea", "price":"$45", "status":"Active", "updated":"2h ago", "documents":["Passport", "Portrait photo", "Bank statement", "Employment letter"]},
+    {"slug":"australia", "flag":"🇦🇺", "name":"Australia", "price":"$59", "status":"Active", "updated":"Yesterday", "documents":["Passport", "Portrait photo", "Bank statement", "Employment letter", "Travel itinerary"]},
+    {"slug":"canada", "flag":"🇨🇦", "name":"Canada", "price":"$69", "status":"Active", "updated":"3d ago", "documents":["Passport", "Portrait photo", "Bank statement", "Invitation letter"]},
+    {"slug":"united-states", "flag":"🇺🇸", "name":"United States", "price":"$79", "status":"Active", "updated":"Last week", "documents":["Passport", "Portrait photo", "Employment letter", "Previous visa"]},
+    {"slug":"france", "flag":"🇫🇷", "name":"France", "price":"$59", "status":"Archived", "updated":"Last month", "documents":["Passport", "Portrait photo", "Hotel booking", "Flight booking"]},
+    {"slug":"germany", "flag":"🇩🇪", "name":"Germany", "price":"$59", "status":"Archived", "updated":"Last month", "documents":["Passport", "Portrait photo", "Travel itinerary", "Hotel booking"]},
+]
+
+ADMIN_DOCUMENT_OPTIONS = [
+    "Passport", "Portrait photo", "Bank statement", "Employment letter", "Travel itinerary",
+    "Hotel booking", "Flight booking", "Invitation letter", "Business license", "Previous visa"
+]
+
+def get_destination_or_default(slug: str):
+    return next((item for item in ADMIN_DESTINATIONS if item["slug"] == slug), ADMIN_DESTINATIONS[0])
+
 ADMIN_PAGE_CONFIG = {
     "dashboard": ("Dashboard", "All recent service activities", "Recent orders", "Monitor visa, airport pickup, and fast track operations in one place."),
     "visa_orders": ("Visa orders", "Visa application operations", "Visa application orders", "Review passport uploads, documents, payment, and processing status."),
@@ -347,7 +366,85 @@ def admin_visa_orders(request: Request):
 
 @app.get("/admin/destinations")
 def admin_destinations(request: Request):
-    return render_admin(request, "destination")
+    status_filter = request.query_params.get("status", "active")
+    if status_filter == "archived":
+        destinations = [item for item in ADMIN_DESTINATIONS if item["status"] == "Archived"]
+    else:
+        status_filter = "active"
+        destinations = [item for item in ADMIN_DESTINATIONS if item["status"] == "Active"]
+    return templates.TemplateResponse("admin_destinations.html", {
+        "request": request,
+        "title": "Destinations - VisaHub Admin",
+        "admin_active": "destination",
+        "destinations": destinations,
+        "status_filter": status_filter,
+        "active_count": len([item for item in ADMIN_DESTINATIONS if item["status"] == "Active"]),
+        "archived_count": len([item for item in ADMIN_DESTINATIONS if item["status"] == "Archived"]),
+    })
+
+@app.get("/admin/destinations/create")
+def admin_create_destination(request: Request):
+    return templates.TemplateResponse("admin_create_destination.html", {
+        "request": request,
+        "title": "Create Destination - VisaHub Admin",
+        "admin_active": "destination",
+    })
+
+@app.post("/admin/destinations/create")
+def admin_create_destination_submit(request: Request):
+    return templates.TemplateResponse("simple.html", {
+        "request": request,
+        "active": "admin",
+        "title": "Destination Created",
+        "subtitle": "Create destination form submitted successfully. Backend storage can be connected later.",
+    })
+
+@app.get("/admin/destinations/{slug}/edit")
+def admin_edit_destination(slug: str, request: Request):
+    destination = get_destination_or_default(slug)
+    return templates.TemplateResponse("admin_edit_destination.html", {
+        "request": request,
+        "title": f"Edit {destination['name']} - VisaHub Admin",
+        "admin_active": "destination",
+        "destination": destination,
+        "document_options": ADMIN_DOCUMENT_OPTIONS,
+    })
+
+@app.post("/admin/destinations/{slug}/edit")
+def admin_edit_destination_submit(slug: str, request: Request):
+    return templates.TemplateResponse("simple.html", {
+        "request": request,
+        "active": "admin",
+        "title": "Destination Updated",
+        "subtitle": "Edit destination form submitted successfully. Backend update logic can be connected later.",
+    })
+
+@app.post("/admin/destinations/{slug}/archive")
+def admin_archive_destination(slug: str, request: Request):
+    return templates.TemplateResponse("simple.html", {
+        "request": request,
+        "active": "admin",
+        "title": "Destination Archived",
+        "subtitle": "Archive action submitted successfully. Backend archive logic can be connected later.",
+    })
+
+@app.post("/admin/destinations/{slug}/restore")
+def admin_restore_destination(slug: str, request: Request):
+    return templates.TemplateResponse("simple.html", {
+        "request": request,
+        "active": "admin",
+        "title": "Destination Restored",
+        "subtitle": "Restore action submitted successfully. Backend restore logic can be connected later.",
+    })
+
+@app.post("/admin/destinations/{slug}/delete")
+def admin_delete_destination(slug: str, request: Request):
+    return templates.TemplateResponse("simple.html", {
+        "request": request,
+        "active": "admin",
+        "title": "Destination Deleted",
+        "subtitle": "Delete action submitted successfully. Backend hard-delete logic can be connected later.",
+    })
 
 @app.get("/admin/airport-pickup-orders")
 def admin_airport_pickup_orders(request: Request):

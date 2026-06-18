@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{ title if title else 'Admin Dashboard - VisaHub' }}</title>
     <link rel="stylesheet" href="{{ url_for('static', path='css/styles.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', path='css/admin.css') }}?v=20260618-clean" />
 </head>
 <body class="admin-body">
     <aside class="admin-sidebar">
@@ -66,7 +67,11 @@
             </div>
             <div class="admin-top-actions">
                 <button class="admin-icon-btn">🔔</button>
+                {% if admin_active == 'destination' %}
+                <a class="admin-primary-btn" href="/admin/destinations/create">+ Create destination</a>
+                {% else %}
                 <button class="admin-primary-btn">+ Create new</button>
+                {% endif %}
             </div>
         </header>
 

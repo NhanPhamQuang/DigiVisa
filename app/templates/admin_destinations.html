@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='css/styles.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', path='css/admin.css') }}?v=20260618-clean" />
+</head>
+<body class="admin-body">
+    <aside class="admin-sidebar">
+        <a class="admin-brand" href="/admin"><span class="admin-brand-icon">✈</span><span>VisaHub Admin</span></a>
+        <nav class="admin-menu">
+            <details class="admin-nav-group" open>
+                <summary>🛂 <span>Visa</span></summary>
+                <a class="admin-menu-item" href="/admin/visa-orders"><span>🧾</span><span>Visa orders</span></a>
+                <a class="admin-menu-item active" href="/admin/destinations"><span>🌍</span><span>Destination</span></a>
+            </details>
+            <details class="admin-nav-group" open>
+                <summary>🚗 <span>Airport pickup</span></summary>
+                <a class="admin-menu-item" href="/admin/airport-pickup-orders"><span>📦</span><span>Airport pickup orders</span></a>
+                <a class="admin-menu-item" href="/admin/drivers"><span>🪪</span><span>Driver</span></a>
+            </details>
+            <details class="admin-nav-group" open>
+                <summary>⚡ <span>Fast track</span></summary>
+                <a class="admin-menu-item" href="/admin/fast-track-orders"><span>🎫</span><span>Fast track orders</span></a>
+                <a class="admin-menu-item" href="/admin/partners"><span>🤝</span><span>Partner</span></a>
+            </details>
+            <a class="admin-menu-item admin-single-item" href="/admin/statistics"><span>📊</span><span>Statistics</span></a>
+        </nav>
+        <a class="admin-profile" href="/admin/profile">
+            <div class="admin-avatar">AD</div>
+            <div><strong>Admin User</strong><small>admin@visahub.com</small></div>
+        </a>
+    </aside>
+
+    <main class="admin-main admin-main-clean">
+        <header class="admin-topbar">
+            <div>
+                <p class="admin-eyebrow">Visa destination management</p>
+                <h1>Destinations</h1>
+            </div>
+            <div class="admin-top-actions">
+                <a class="admin-primary-btn" href="/admin/destinations/create">+ Create destination</a>
+            </div>
+        </header>
+
+        <section class="admin-panel admin-dest-list-panel">
+            <div class="admin-panel-header admin-dest-header">
+                <div>
+                    <h2>Destination list</h2>
+                    <p>Manage active and archived destinations, document checklists, and service prices.</p>
+                </div>
+                <div class="admin-filter-row">
+                    <input type="text" placeholder="Search destination..." />
+                    <select>
+                        <option>Newest first</option>
+                        <option>A-Z</option>
+                        <option>Price low to high</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="admin-status-tabs admin-dest-filter-tabs">
+                <a class="admin-status-tab {{ 'active' if status_filter == 'active' else '' }}" href="/admin/destinations?status=active">
+                    <span>Active destinations</span><strong>{{ active_count }}</strong>
+                </a>
+                <a class="admin-status-tab {{ 'active' if status_filter == 'archived' else '' }}" href="/admin/destinations?status=archived">
+                    <span>Archived destinations</span><strong>{{ archived_count }}</strong>
+                </a>
+            </div>
+
+            <div class="admin-dest-list">
+                {% for destination in destinations %}
+                <article class="admin-dest-row">
+                    <div class="admin-dest-main">
+                        <div class="admin-dest-flag">{{ destination.flag }}</div>
+                        <div>
+                            <h3>{{ destination.name }}</h3>
+                            <p>{{ destination.documents|length }} required documents · Updated {{ destination.updated }}</p>
+                        </div>
+                    </div>
+
+                    <div class="admin-dest-docs">
+                        {% for doc in destination.documents[:4] %}
+                        <span>{{ doc }}</span>
+                        {% endfor %}
+                        {% if destination.documents|length > 4 %}<span>+{{ destination.documents|length - 4 }}</span>{% endif %}
+                    </div>
+
+                    <div class="admin-dest-price">
+                        <span>Service price</span>
+                        <strong>{{ destination.price }}</strong>
+                    </div>
+
+                    <div class="admin-dest-state">
+                        <span class="status-pill {{ 'status-completed' if destination.status == 'Active' else 'status-issue' }}">{{ destination.status }}</span>
+                    </div>
+
+                    <details class="admin-dest-actions">
+                        <summary aria-label="Open destination actions">⋯</summary>
+                        <div class="admin-dest-menu">
+                            {% if status_filter == 'archived' %}
+                            <form method="post" action="/admin/destinations/{{ destination.slug }}/restore">
+                                <button type="submit">Restore</button>
+                            </form>
+                            <form method="post" action="/admin/destinations/{{ destination.slug }}/delete">
+                                <button class="danger" type="submit">Delete</button>
+                            </form>
+                            {% else %}
+                            <a href="/admin/destinations/{{ destination.slug }}/edit">Edit</a>
+                            <form method="post" action="/admin/destinations/{{ destination.slug }}/archive">
+                                <button type="submit">Archive</button>
+                            </form>
+                            {% endif %}
+                        </div>
+                    </details>
+                </article>
+                {% endfor %}
+            </div>
+        </section>
+    </main>
+</body>
+</html>

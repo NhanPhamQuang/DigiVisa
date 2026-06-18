@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Destination - VisaHub Admin</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='css/styles.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', path='css/admin.css') }}?v=20260618-clean" />
+</head>
+<body class="admin-body">
+    <aside class="admin-sidebar">
+        <a class="admin-brand" href="/admin">
+            <span class="admin-brand-icon">✈</span>
+            <span>VisaHub Admin</span>
+        </a>
+
+        <nav class="admin-menu">
+            <details class="admin-nav-group" open>
+                <summary>🛂 <span>Visa</span></summary>
+                <a class="admin-menu-item" href="/admin/visa-orders"><span>🧾</span><span>Visa orders</span></a>
+                <a class="admin-menu-item active" href="/admin/destinations"><span>🌍</span><span>Destination</span></a>
+            </details>
+
+            <details class="admin-nav-group" open>
+                <summary>🚗 <span>Airport pickup</span></summary>
+                <a class="admin-menu-item" href="/admin/airport-pickup-orders"><span>📦</span><span>Airport pickup orders</span></a>
+                <a class="admin-menu-item" href="/admin/drivers"><span>🪪</span><span>Driver</span></a>
+            </details>
+
+            <details class="admin-nav-group" open>
+                <summary>⚡ <span>Fast track</span></summary>
+                <a class="admin-menu-item" href="/admin/fast-track-orders"><span>🎫</span><span>Fast track orders</span></a>
+                <a class="admin-menu-item" href="/admin/partners"><span>🤝</span><span>Partner</span></a>
+            </details>
+
+            <a class="admin-menu-item admin-single-item" href="/admin/statistics"><span>📊</span><span>Statistics</span></a>
+        </nav>
+
+        <a class="admin-profile" href="/admin/profile">
+            <div class="admin-avatar">AD</div>
+            <div>
+                <strong>Admin User</strong>
+                <small>admin@visahub.com</small>
+            </div>
+        </a>
+    </aside>
+
+    <main class="admin-main admin-main-clean">
+        <header class="admin-topbar">
+            <div>
+                <p class="admin-eyebrow">Visa destination management</p>
+                <h1>Create destination</h1>
+            </div>
+            <div class="admin-top-actions">
+                <a class="admin-secondary-link" href="/admin/destinations">Back to destinations</a>
+            </div>
+        </header>
+
+        <section class="admin-create-layout">
+            <form class="admin-panel admin-destination-form" method="post" action="/admin/destinations/create">
+                <div class="admin-form-section-head">
+                    <span>01</span>
+                    <div>
+                        <h2>Destination information</h2>
+                        <p>Create a new visa destination with required checklist and service price.</p>
+                    </div>
+                </div>
+
+                <label class="admin-field">
+                    <span>Destination name</span>
+                    <input type="text" name="destination_name" placeholder="Example: Japan, Korea, Australia" required />
+                </label>
+
+                <div class="admin-field">
+                    <span>Required document checklist</span>
+                    <p class="admin-field-hint">Select documents customers must prepare before staff review.</p>
+                    <div class="admin-checklist-grid">
+                        <label><input type="checkbox" name="documents" value="Passport" checked /> Passport</label>
+                        <label><input type="checkbox" name="documents" value="Portrait photo" /> Portrait photo</label>
+                        <label><input type="checkbox" name="documents" value="Bank statement" /> Bank statement</label>
+                        <label><input type="checkbox" name="documents" value="Employment letter" /> Employment letter</label>
+                        <label><input type="checkbox" name="documents" value="Travel itinerary" /> Travel itinerary</label>
+                        <label><input type="checkbox" name="documents" value="Hotel booking" /> Hotel booking</label>
+                        <label><input type="checkbox" name="documents" value="Flight booking" /> Flight booking</label>
+                        <label><input type="checkbox" name="documents" value="Invitation letter" /> Invitation letter</label>
+                        <label><input type="checkbox" name="documents" value="Business license" /> Business license</label>
+                        <label><input type="checkbox" name="documents" value="Previous visa" /> Previous visa</label>
+                    </div>
+                </div>
+
+                <label class="admin-field">
+                    <span>Service price</span>
+                    <div class="admin-price-input">
+                        <select name="currency">
+                            <option>USD</option>
+                            <option>VND</option>
+                            <option>EUR</option>
+                        </select>
+                        <input type="number" name="price" placeholder="39" min="0" required />
+                    </div>
+                </label>
+
+                <div class="admin-form-actions">
+                    <a class="admin-cancel-btn" href="/admin/destinations">Cancel</a>
+                    <button class="admin-primary-btn" type="submit">Create destination</button>
+                </div>
+            </form>
+
+            <aside class="admin-panel admin-preview-panel">
+                <div class="admin-form-section-head">
+                    <span>02</span>
+                    <div>
+                        <h2>Preview</h2>
+                        <p>This is how the destination data will be organized.</p>
+                    </div>
+                </div>
+
+                <div class="destination-preview-card">
+                    <div class="destination-preview-icon">🌍</div>
+                    <h3>New destination</h3>
+                    <p>Visa service price and document checklist will appear in destination detail page.</p>
+                    <div class="preview-row"><span>Checklist</span><strong>Selected items</strong></div>
+                    <div class="preview-row"><span>Price</span><strong>Service fee</strong></div>
+                    <div class="preview-row"><span>Status</span><strong>Ready to publish</strong></div>
+                </div>
+
+                <div class="admin-note-box">
+                    <strong>UX note</strong>
+                    <p>Passport should stay checked by default because the application flow requires passport upload.</p>
+                </div>
+            </aside>
+        </section>
+    </main>
+</body>
+</html>
